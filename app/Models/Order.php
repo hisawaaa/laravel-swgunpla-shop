@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Order extends Model
+{
+    use HasFactory;
+    protected $fillable = [
+        'user_id', 
+        'address_id', 
+        'total_amount', 
+        'status', 
+        'payment_method', 
+        'voucher_id'
+    ];
+
+    // Nhiều Order thuộc về 1 User 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+    
+    // Nhiều Order được giao đến 1 Address
+    public function address() {
+        return $this->belongsTo(Address::class);
+    }
+
+    // Nhiều Order có nhiều Product
+    public function products() {
+        return $this->belongsToMany(Product::class, 'order_items')->withPivot('quantity', 'price');
+    }
+
+    // 1 Order có nhiều OrderItem
+    public function items() {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class);
+    }
+}

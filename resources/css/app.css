@@ -1,0 +1,264 @@
+@import 'bootstrap/dist/css/bootstrap.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/* Định nghĩa màu sắc (Xanh, Đỏ, Vàng) */
+:root {
+    --bs-blue: #0d6efd;
+    --bs-red: #dc3545;
+    --bs-yellow: #ffc107;
+    --bs-dark: #212529;
+    --bs-primary: var(--bs-blue);
+    --bs-danger: var(--bs-red);
+    --bs-warning: var(--bs-yellow);
+}
+
+/* Style Navbar (Trắng + Viền đen) */
+.navbar-custom {
+    background-color: #ffffff;
+    border-bottom: 2px solid #000000;
+}
+.navbar-custom .navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.navbar-custom .nav-link {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+.navbar-custom .nav-link.active {
+    color: var(--bs-blue) !important;
+}
+
+/* Style Thẻ Sản phẩm (Nền trắng + Viền đen) */
+.product-card-custom {
+    border: 1px solid #dee2e6; /* Viền xám nhạt */
+    transition: all 0.3s ease;
+}
+.product-card-custom:hover {
+    border-color: #000000; /* Viền đen khi hover */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.product-card-custom .card-title a:hover {
+    color: var(--bs-blue) !important;
+}
+
+/* Màu nút (Xanh/Đỏ) */
+.btn-primary {
+    background-color: var(--bs-blue);
+    border-color: var(--bs-blue);
+}
+.btn-danger {
+    background-color: var(--bs-red);
+    border-color: var(--bs-red);
+}
+
+/* Style Sidebar Lọc */
+.filter-sidebar .card-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #000; /* Viền đen ở header */
+}
+.filter-sidebar .list-group-item {
+    border: none;
+    padding: 0.75rem 1.25rem;
+}
+.filter-sidebar .list-group-item.active {
+    background-color: var(--bs-dark);
+    color: #fff;
+    border-color: var(--bs-dark);
+}
+/* Ensure navbar text is dark */
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: var(--bs-dark) !important;
+}
+.navbar-custom .nav-link:hover {
+     color: var(--bs-primary) !important; /* Blue hover */
+}
+.navbar-custom .nav-link.active {
+    color: var(--bs-primary) !important; /* Blue active */
+    font-weight: bold;
+}
+/* Ensure badge text contrasts well */
+.badge.bg-danger { color: white !important; }
+.badge.bg-warning { color: black !important; }
+
+/* Style cho dấu ngăn cách (|) */
+.navbar-custom .nav-item-divider {
+    color: rgba(0, 0, 0, 0.2); /* Màu xám nhạt cho dấu | */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Style cơ bản cho nav-link (relative để định vị gạch chân) */
+.navbar-custom .nav-link {
+    position: relative; /* Cần thiết cho pseudo-element ::after */
+    padding-top: 1rem; /* Tăng padding để có không gian */
+    padding-bottom: 1rem;
+    color: var(--bs-dark); /* Đảm bảo màu chữ đen */
+    transition: color 0.2s ease-in-out; /* Hiệu ứng chuyển màu chữ */
+}
+
+/* Tắt gạch chân mặc định của link */
+.navbar-custom .nav-link:hover {
+    text-decoration: none; /* Bỏ gạch chân mặc định */
+    color: var(--bs-primary) !important; /* Chữ thành màu xanh khi hover */
+}
+
+/* Tạo gạch chân giả bằng pseudo-element ::after */
+.navbar-custom .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; /* Đặt ở dưới cùng */
+    left: 50%; /* Bắt đầu từ giữa */
+    transform: translateX(-50%); /* Căn giữa gạch chân */
+    width: 0; /* Ban đầu không có chiều rộng */
+    height: 3px; /* Độ dày gạch chân */
+    background-color: var(--bs-primary); /* Màu xanh */
+    opacity: 0;
+    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Hiệu ứng animation chiều rộng */
+}
+
+/* Khi hover vào nav-link, làm gạch chân xuất hiện (width 100%) */
+.navbar-custom .nav-link:hover::after {
+    width: 80%;
+    opacity: 1; /* Chiều rộng gạch chân (có thể chỉnh thành 100%) */
+}
+
+/* Style cho nav-link đang active (ví dụ: trang Shop) */
+.navbar-custom .nav-link.active {
+    color: var(--bs-primary) !important; /* Chữ màu xanh */
+    font-weight: bold;
+}
+
+/* Gạch chân luôn hiển thị cho link active */
+.navbar-custom .nav-link.active::after {
+     width: 80%; /* Gạch chân luôn hiện cho link active */
+     opacity: 1;
+     background-color: var(--bs-primary);
+}
+
+/* Đảm bảo nền navbar luôn trắng và có viền */
+.navbar-custom {
+    background-color: #ffffff !important;
+    border-bottom: 2px solid #000000;
+    box-shadow: 0 2px 4px rgba(0,0,0,.05); /* Thêm bóng đổ nhẹ */
+}
+
+/* === ADMIN LAYOUT STYLES === */
+:root {
+    --admin-sidebar-width: 280px;
+}
+
+.admin-sidebar {
+    width: var(--admin-sidebar-width);
+    min-height: 100vh; /* Chiều cao đầy đủ */
+    transition: all 0.3s;
+}
+
+.admin-content {
+    /* Tính toán độ rộng còn lại */
+    width: calc(100% - var(--admin-sidebar-width));
+}
+
+/* Responsive: Trên màn hình nhỏ, sidebar nằm trên */
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        width: 100%;
+        min-height: auto; /* Chiều cao tự động trên mobile */
+        position: static;
+    }
+    .admin-content {
+        width: 100%;
+    }
+}
+
+/* Style cho link sidebar */
+.admin-sidebar .nav-pills .nav-link.active,
+.admin-sidebar .nav-pills .show > .nav-link {
+    color: #fff !important;
+    background-color: var(--bs-primary); /* Màu xanh khi active */
+}
+
+.admin-sidebar .nav-pills .nav-link.text-white-50:hover {
+    color: #fff !important; /* Chữ trắng khi hover */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Đảm bảo form logout chiếm toàn bộ chiều cao li */
+.admin-sidebar .nav-item.mt-auto {
+    margin-top: auto !important;
+}
+
+/* === STYLE CHO MÔ TẢ THU GỌN === */
+/* Wrapper ở trạng thái thu gọn (MẶC ĐỊNH) */
+.product-description-wrapper.collapsed {
+    position: relative;
+    max-height: 150px; /* Chiều cao tối đa khi thu gọn (bạn có thể thay đổi) */
+    overflow: hidden;  /* Ẩn phần thừa */
+}
+
+/* Wrapper ở trạng thái mở rộng (KHÔNG có class .collapsed) */
+.product-description-wrapper {
+    position: relative;
+    max-height: 1500px; /* Chiều cao tối đa khi mở (đặt giá trị lớn) */
+    overflow: hidden;
+    transition: max-height 0.4s ease-out; /* Hiệu ứng animation */
+}
+
+/* Lớp phủ mờ dần */
+.description-fade-out {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(to bottom, transparent, white 80%);
+    /* Ẩn lớp phủ mờ khi đã mở rộng */
+    .product-description-wrapper:not(.collapsed) & {
+        display: none;
+    }
+}
+
+/* Nút bấm */
+.product-description-wrapper + .btn-link {
+    cursor: pointer;
+}
+
+/* === HIỆU ỨNG HERO TRÀN (BLEED EFFECT) === */
+
+.hero-image-col {
+    position: relative; /* Bắt buộc để z-index hoạt động */
+    overflow: visible; 
+    z-index: 5; /* <<< ĐẶT LỚP THẤP HƠN */
+}
+
+/* Ảnh PNG đã xóa phông */
+.hero-image-png {
+    position: relative;
+    /* z-index: 5; */ /* Không cần z-index ở đây nữa */
+    filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.25));
+}
+
+/* Cột chứa văn bản */
+.hero-text-col {
+    position: relative; /* Bắt buộc để z-index hoạt động */
+    z-index: 10; /* <<< ĐẶT LỚP CAO HƠN */
+}
+
+/* Áp dụng hiệu ứng trên màn hình lớn (desktop) */
+@media (min-width: 992px) {
+    .hero-image-png {
+        /* Giá trị tinh chỉnh cho ảnh Freedom Gundam */
+        transform: scale(1.3); 
+        margin-left: -30%;     
+        margin-top: -30px;      
+    }
+}
+
+body, html {
+    overflow-x: hidden;
+}
