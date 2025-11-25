@@ -14,7 +14,7 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Brand::query();
+        $query = Brand::withCount('products');
 
         // Xử lý TÌM KIẾM
         if ($request->has('search')) {

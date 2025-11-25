@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Category::query();
+        $query = Category::withCount('products');
 
         // Xử lý TÌM KIẾM
         if ($request->has('search')) {

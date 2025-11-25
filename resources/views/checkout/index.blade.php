@@ -55,7 +55,20 @@
                                 <strong>COD</strong> - Thanh toán khi nhận hàng
                             </label>
                         </div>
-                        {{-- Thêm phương thức khác ở đây nếu có --}}
+
+                        {{-- NÚT THANH TOÁN VNPAY --}}
+                        <form action="{{ route('checkout.vnpay') }}" method="POST" class="mt-4">
+                            @csrf
+                            {{-- Input ẩn lấy ID địa chỉ (sẽ được JS cập nhật) --}}
+                            <input type="hidden" name="address_id" value="{{ $addresses->first() ? $addresses->first()->id : '' }}" class="payment-address-input">
+                            
+                            <button type="submit" class="btn btn-primary w-100 btn-lg d-flex align-items-center justify-content-center" 
+                                    {{ $addresses->isEmpty() ? 'disabled' : '' }} 
+                                    style="background-color: #005BAA; border-color: #005BAA; gap: 10px;">
+                                    
+                                <span class="fw-bold">Thanh toán qua VNPay</span>
+                            </button>
+                        </form>
                         @error('payment_method') <div class="text-danger mt-2 small">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -117,6 +130,23 @@
     </form>
 </div>
 @endsection
+
+<script>
+    // Lắng nghe sự kiện khi người dùng thay đổi địa chỉ nhận hàng
+    const addressRadios = document.querySelectorAll('input[name="address_id"]');
+    const paymentAddressInputs = document.querySelectorAll('.payment-address-input'); // Các input ẩn trong form thanh toán
+
+    addressRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const selectedAddressId = this.value;
+            
+            // Cập nhật giá trị cho TẤT CẢ các input ẩn trong các form thanh toán
+            paymentAddressInputs.forEach(input => {
+                input.value = selectedAddressId;
+            });
+        });
+    });
+</script>
 
 @push('styles')
 <style>

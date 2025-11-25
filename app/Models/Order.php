@@ -41,4 +41,43 @@ class Order extends Model
     {
         return $this->belongsTo(Voucher::class);
     }
+
+    protected static function booted()
+    {
+        // Lắng nghe sự kiện "updated" (khi đơn hàng được cập nhật)
+        static::updated(function ($order) {
+            
+            // TRƯỜNG HỢP 1: HỦY ĐƠN HÀNG -> HOÀN KHO
+            // Nếu trạng thái đổi thành 'cancelled' VÀ trạng thái cũ KHÔNG phải là 'cancelled'
+            if ($order->status === 'cancelled' && $order->getOriginal('status') !== 'cancelled') {
+                // Duyệt qua các sản phẩm trong đơn
+                foreach ($order->items as $item) {
+                    // Cộng lại số lượng vào kho
+                    if ($item->product) {
+                        $item->product->increment('stock', $item->quantity);
+                    }
+                }
+                
+                // (Tùy chọn) Nếu có Voucher, hoàn lại số lượng voucher
+                if ($order->voucher) {
+                    $order->voucher->increment('quantity');
+                }
+            }
+
+            // TRƯỜNG HỢP 2: KHÔI PHỤC ĐƠN HÀNG (Admin lỡ tay hủy rồi bật lại) -> TRỪ KHO LẠI
+            // Nếu trạng thái cũ là 'cancelled' VÀ trạng thái mới KHÁC 'cancelled'
+            if ($order->getOriginal('status') === 'cancelled' && $order->status !== 'cancelled') {
+                foreach ($order->items as $item) {
+                    if ($item->product) {
+                        // Trừ kho lại
+                        $item->product->decrement('stock', $item->quantity);
+                    }
+                }
+                
+                if ($order->voucher) {
+                    $order->voucher->decrement('quantity');
+                }
+            }
+        });
+    }
 }

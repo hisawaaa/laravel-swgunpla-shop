@@ -19,6 +19,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\VNPayController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -47,6 +48,11 @@ Route::middleware('auth')->group(function () {
 
     // === ĐÁNH GIÁ SẢN PHẨM ===
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+    // 1. Gửi yêu cầu thanh toán VNPay
+    Route::post('/checkout/vnpay', [VNPayController::class, 'createPayment'])->name('checkout.vnpay');
+    // 2. Xử lý kết quả trả về từ VNPay
+    Route::get('/checkout/vnpay/return', [VNPayController::class, 'vnpayReturn'])->name('vnpay.return');
 });
 
 // === USER ===

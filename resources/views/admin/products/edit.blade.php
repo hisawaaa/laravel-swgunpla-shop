@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-@use Illuminate\Support\Facades\Storage; {{-- Thêm để dùng Storage::url() --}}
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
 
 @section('title', 'Cập nhật Sản phẩm #' . $product->id)
 
